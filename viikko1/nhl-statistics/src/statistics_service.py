@@ -41,8 +41,6 @@ class StatisticsService:
             sortKey = sort_by_goals
         elif sortBy == SortBy.ASSISTS:
             sortKey = sort_by_assists
-        else:
-            raise
 
         sorted_players = sorted(
             self._players,
