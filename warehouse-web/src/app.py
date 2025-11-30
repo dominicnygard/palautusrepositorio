@@ -1,7 +1,12 @@
 """Flask web application for managing warehouses (Varasto)."""
 import os
 from flask import Flask, render_template, request, redirect, url_for
-from src.varasto import Varasto
+
+# Support both running directly (python src/app.py) and via tests/module import
+try:
+    from src.varasto import Varasto
+except ImportError:
+    from varasto import Varasto
 
 
 # Get the directory where this file is located and find templates relative to parent
