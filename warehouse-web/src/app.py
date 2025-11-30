@@ -20,6 +20,14 @@ def get_next_id():
     return _warehouse_counter[0]
 
 
+def safe_float(value, default=0.0):
+    """Safely convert a value to float, returning default if conversion fails."""
+    try:
+        return float(value) if value else default
+    except (ValueError, TypeError):
+        return default
+
+
 @app.route('/')
 def index():
     """Display the list of all warehouses."""
@@ -31,8 +39,8 @@ def create_warehouse():
     """Create a new warehouse."""
     if request.method == 'POST':
         name = request.form.get('name', 'Unnamed Warehouse')
-        tilavuus = float(request.form.get('tilavuus', 0))
-        alku_saldo = float(request.form.get('alku_saldo', 0))
+        tilavuus = safe_float(request.form.get('tilavuus'), 0)
+        alku_saldo = safe_float(request.form.get('alku_saldo'), 0)
 
         warehouse_id = get_next_id()
         warehouses[warehouse_id] = {
@@ -61,7 +69,7 @@ def add_to_warehouse(warehouse_id):
     if warehouse is None:
         return "Warehouse not found", 404
 
-    maara = float(request.form.get('maara', 0))
+    maara = safe_float(request.form.get('maara'), 0)
     warehouse['varasto'].lisaa_varastoon(maara)
     return redirect(url_for('view_warehouse', warehouse_id=warehouse_id))
 
@@ -73,7 +81,7 @@ def remove_from_warehouse(warehouse_id):
     if warehouse is None:
         return "Warehouse not found", 404
 
-    maara = float(request.form.get('maara', 0))
+    maara = safe_float(request.form.get('maara'), 0)
     warehouse['varasto'].ota_varastosta(maara)
     return redirect(url_for('view_warehouse', warehouse_id=warehouse_id))
 
@@ -87,4 +95,6 @@ def delete_warehouse(warehouse_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Use environment variable to control debug mode (default to False for security)
+    debug_mode = os.environ.get('FLASK_DEBUG', 'false').lower() == 'true'
+    app.run(debug=debug_mode)
