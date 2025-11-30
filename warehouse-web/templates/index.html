@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Varastot{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Varastot</h1>
+    
+    {% if warehouses %}
+        {% for id, warehouse in warehouses.items() %}
+        <div class="warehouse-card">
+            <h3>{{ warehouse.name }}</h3>
+            <p class="info">{{ warehouse.varasto }}</p>
+            <p class="info">Tilavuus: {{ warehouse.varasto.tilavuus }}</p>
+            <div class="progress-bar">
+                {% set fill_percent = (warehouse.varasto.saldo / warehouse.varasto.tilavuus * 100) if warehouse.varasto.tilavuus > 0 else 0 %}
+                <div class="progress-fill" style="width: {{ fill_percent }}%;"></div>
+            </div>
+            <a href="{{ url_for('view_warehouse', warehouse_id=id) }}" class="btn btn-primary">Näytä</a>
+            <form method="POST" action="{{ url_for('delete_warehouse', warehouse_id=id) }}" style="display: inline;">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Haluatko varmasti poistaa tämän varaston?');">Poista</button>
+            </form>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>Ei varastoja. <a href="{{ url_for('create_warehouse') }}">Luo uusi varasto</a></p>
+    {% endif %}
+</div>
+{% endblock %}

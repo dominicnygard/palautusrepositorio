@@ -1,0 +1,35 @@
+[project]
+name = "warehouse-web"
+version = "0.1.0"
+description = "A web interface for managing warehouses (Varasto)"
+authors = [
+    {name = "copilot-swe-agent[bot]",email = "198982749+Copilot@users.noreply.github.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "flask (>=3.1.2,<4.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "pytest (>=9.0.1,<10.0.0)",
+    "pylint (>=4.0.4,<5.0.0)"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.pylint.messages_control]
+disable = ["C0114"]  # Missing module docstring in tests
+
+[tool.poetry]
+package-mode = false

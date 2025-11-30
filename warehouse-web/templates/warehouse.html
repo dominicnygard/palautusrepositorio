@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{{ warehouse.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ warehouse.name }}</h1>
+    
+    <div class="warehouse-card">
+        <h2>Tiedot</h2>
+        <p class="info"><strong>Tilavuus:</strong> {{ warehouse.varasto.tilavuus }}</p>
+        <p class="info"><strong>Saldo:</strong> {{ warehouse.varasto.saldo }}</p>
+        <p class="info"><strong>Tilaa jäljellä:</strong> {{ warehouse.varasto.paljonko_mahtuu() }}</p>
+        
+        <div class="progress-bar">
+            {% set fill_percent = (warehouse.varasto.saldo / warehouse.varasto.tilavuus * 100) if warehouse.varasto.tilavuus > 0 else 0 %}
+            <div class="progress-fill" style="width: {{ fill_percent }}%;"></div>
+        </div>
+        <p class="info">{{ warehouse.varasto }}</p>
+    </div>
+    
+    <div class="warehouse-card">
+        <h2>Lisää varastoon</h2>
+        <form method="POST" action="{{ url_for('add_to_warehouse', warehouse_id=warehouse.id) }}" class="inline-form">
+            <input type="number" name="maara" step="0.01" min="0" placeholder="Määrä" required>
+            <button type="submit" class="btn btn-success">Lisää</button>
+        </form>
+    </div>
+    
+    <div class="warehouse-card">
+        <h2>Ota varastosta</h2>
+        <form method="POST" action="{{ url_for('remove_from_warehouse', warehouse_id=warehouse.id) }}" class="inline-form">
+            <input type="number" name="maara" step="0.01" min="0" placeholder="Määrä" required>
+            <button type="submit" class="btn btn-primary">Ota</button>
+        </form>
+    </div>
+    
+    <div class="warehouse-card">
+        <h2>Poista varasto</h2>
+        <form method="POST" action="{{ url_for('delete_warehouse', warehouse_id=warehouse.id) }}">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Haluatko varmasti poistaa tämän varaston?');">Poista varasto</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
