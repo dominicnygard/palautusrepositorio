@@ -51,7 +51,7 @@ class TennisGame:
             return "Advantage player2"
         elif score_difference >= self.SCORE_DIFFERENCE_FOR_WIN:
             return "Win for player1"
-        else:
+        elif score_difference <= -self.SCORE_DIFFERENCE_FOR_WIN:
             return "Win for player2"
 
     def _get_regular_score(self):
