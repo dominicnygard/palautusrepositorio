@@ -37,12 +37,8 @@ class TennisGame:
         return self.player1_score >= self.MINIMUM_SCORE_TO_WIN or self.player2_score >= self.MINIMUM_SCORE_TO_WIN
 
     def _get_equal_score(self):
-        if self.player1_score == 0:
-            return "Love-All"
-        elif self.player1_score == 1:
-            return "Fifteen-All"
-        elif self.player1_score == 2:
-            return "Thirty-All"
+        if self.player1_score < 3:
+            return f"{self.SCORE_NAMES[self.player1_score]}-All"
         else:
             return "Deuce"
 
